@@ -14,9 +14,7 @@ const transactionsRouter = Router();
 
 transactionsRouter.get('/', async (request, response) => {
   const transactionsRepository = getCustomRepository(TransactionsRepository);
-  const transactions = await transactionsRepository.find({
-    relations: ['category_id'],
-  });
+  const transactions = await transactionsRepository.find();
 
   const balance = await transactionsRepository.getBalance();
 
@@ -60,7 +58,7 @@ transactionsRouter.post(
     const importTransactions = new ImportTransactionsService();
 
     const transactions = await importTransactions.execute({
-      filename: request.file.filename,
+      filePath: request.file.path,
     });
 
     return response.json(transactions);
